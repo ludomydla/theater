@@ -20,7 +20,11 @@ class Theater extends React.Component {
     if (seatsCopy[row][seat]) {
       reservationsCopy.push({ row, seat });
     }
-    //console.log("res:", reservationsCopy);
+    reservationsCopy.sort(function(a, b) {
+      // Used 1000 to make sure, the row value has higher "priority"
+      // Can use also length of row array
+      return a.row * 1000 + a.seat - (b.row * 1000 + b.seat);
+    });
     this.setState({ seats: seatsCopy, reservations: reservationsCopy });
   }
 
@@ -34,29 +38,53 @@ class Theater extends React.Component {
     );
   }
 
-  render() {
-    const allSeats = [];
-    for (let row = 0; row < this.state.seats.length; row++) {
-      let rowSeats = [];
-      for (let seat = 0; seat < this.state.seats[row].length; seat++) {
-        rowSeats.push(
+  renderSeat(rowIndex, seatIndex) {
+    if (rowIndex < 0) {
+      if (seatIndex < 0) {
+        // 1️⃣ Top left corner - empty span
+        return <span key={seatIndex} />;
+      } else {
+        // 2️⃣ Top row with seat number
+        return <span key={seatIndex}>{seatIndex + 1}</span>;
+      }
+    } else {
+      if (seatIndex < 0) {
+        // 3️⃣ First element of row - row label
+        return <span key={seatIndex}>Rad{rowIndex + 1}</span>;
+      } else {
+        // 4️⃣ Finally render Seat component
+        return (
           <Seat
-            key={seat}
-            row={row}
-            seat={seat}
+            key={seatIndex}
+            row={rowIndex}
+            seat={seatIndex}
             clickHandler={this.clickHandler.bind(this)}
-            checked={this.state.seats[row][seat] ? "checked" : ""}
+            checked={this.state.seats[rowIndex][seatIndex] ? "checked" : ""}
           />
         );
       }
+    }
+  }
+
+  renderRow(rowIndex) {
+    let rowSeats = [];
+    for (let seat = -1; seat < this.state.seats[0].length; seat++) {
+      rowSeats.push(this.renderSeat(rowIndex, seat));
+    }
+    return rowSeats;
+  }
+
+  render() {
+    const allSeats = [];
+    for (let row = -1; row < this.state.seats.length; row++) {
       allSeats.push(
-        <div className="row" key={row}>
-          {rowSeats}
-        </div>
+        //<div className="row" key={row}>
+        this.renderRow(row)
+        //</div>
       );
     }
     const reservationsList = this.state.reservations.map((res, index) => (
-      <Reservation row={res.row} seat={res.seat} />
+      <Reservation row={res.row} seat={res.seat} key={index} />
     ));
 
     return (

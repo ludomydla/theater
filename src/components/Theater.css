@@ -3,15 +3,22 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 80% 20%;
+  background-color: var(--bg-color);
 }
 
 .theater {
+  display: grid;
+  padding: 5px;
+  grid-template-columns: repeat(21, 1fr);
+  grid-row-gap: 3px;
 }
 
 .count {
+  padding: 5px;
 }
 
 .reservations {
+  padding: 5px;
 }
 
 .reservations li {

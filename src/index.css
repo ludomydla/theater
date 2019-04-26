@@ -1,3 +1,7 @@
+:root {
+  --bg-color: #dfe5d0;
+}
+
 body {
   margin: 0;
   padding: 0;
