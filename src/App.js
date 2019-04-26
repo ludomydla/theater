@@ -1,6 +1,5 @@
 import React from "react";
 import Theater from "./components/Theater";
-import "./App.css";
 
 function App() {
   let rows = 10;

@@ -1,0 +1,19 @@
+.panel {
+  width: 700px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+
+.theater {
+}
+
+.count {
+}
+
+.reservations {
+}
+
+.reservations li {
+  list-style-type: none;
+}
