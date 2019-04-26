@@ -24,3 +24,11 @@
 .reservations li {
   list-style-type: none;
 }
+
+.reservations button {
+  border: 0;
+  background-color: transparent;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}

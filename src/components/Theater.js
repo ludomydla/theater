@@ -12,7 +12,7 @@ class Theater extends React.Component {
     };
   }
 
-  clickHandler(row, seat) {
+  checkSeat(row, seat) {
     // 2D array deep copy
     let seatsCopy = this.state.seats.map(arr => [...arr]);
     const reservationsCopy = [...this.state.reservations];
@@ -20,11 +20,27 @@ class Theater extends React.Component {
     if (seatsCopy[row][seat]) {
       reservationsCopy.push({ row, seat });
     }
-    reservationsCopy.sort(function(a, b) {
-      // Used 1000 to make sure, the row value has higher "priority"
-      // Can use also length of row array
-      return a.row * 1000 + a.seat - (b.row * 1000 + b.seat);
+    reservationsCopy.sort(
+      (a, b) =>
+        // Used 1000 to make sure, the row value has higher "priority"
+        // Can use also length of row array
+        a.row * 1000 + a.seat - (b.row * 1000 + b.seat)
+    );
+    this.setState({ seats: seatsCopy, reservations: reservationsCopy });
+  }
+
+  removeSeat(row, seat) {
+    // 2D array deep copy
+    let seatsCopy = this.state.seats.map(arr => [...arr]);
+    const reservationsCopy = [...this.state.reservations];
+    const myReservationIndex = reservationsCopy.findIndex(function(
+      reservation
+    ) {
+      return reservation.row === row && reservation.seat === seat;
     });
+    seatsCopy[row][seat] = false;
+
+    reservationsCopy.splice(myReservationIndex, 1);
     this.setState({ seats: seatsCopy, reservations: reservationsCopy });
   }
 
@@ -58,7 +74,7 @@ class Theater extends React.Component {
             key={seatIndex}
             row={rowIndex}
             seat={seatIndex}
-            clickHandler={this.clickHandler.bind(this)}
+            clickHandler={this.checkSeat.bind(this)}
             checked={this.state.seats[rowIndex][seatIndex] ? "checked" : ""}
           />
         );
@@ -84,7 +100,12 @@ class Theater extends React.Component {
       );
     }
     const reservationsList = this.state.reservations.map((res, index) => (
-      <Reservation row={res.row} seat={res.seat} key={index} />
+      <Reservation
+        row={res.row}
+        seat={res.seat}
+        key={index}
+        clickHandler={this.removeSeat.bind(this)}
+      />
     ));
 
     return (
