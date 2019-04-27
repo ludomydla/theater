@@ -32,32 +32,34 @@ class Theater extends React.Component {
   checkSeat(row, seat) {
     // 2D array deep copy
     let seatsCopy = this.state.seats.map(arr => [...arr]);
-    const reservationsCopy = [...this.state.reservations];
+    let reservationsCopy = [...this.state.reservations];
     seatsCopy[row][seat] = !seatsCopy[row][seat];
+
     if (seatsCopy[row][seat]) {
       reservationsCopy.push({ row, seat });
+      reservationsCopy.sort(
+        (a, b) =>
+          // Used 1000 to make sure, the row value has higher "priority"
+          // Can use also length of row array
+          a.row * 1000 + a.seat - (b.row * 1000 + b.seat)
+      );
+    } else {
+      reservationsCopy = this.removeFromReservations(
+        reservationsCopy,
+        row,
+        seat
+      );
     }
-    reservationsCopy.sort(
-      (a, b) =>
-        // Used 1000 to make sure, the row value has higher "priority"
-        // Can use also length of row array
-        a.row * 1000 + a.seat - (b.row * 1000 + b.seat)
-    );
     this.setState({ seats: seatsCopy, reservations: reservationsCopy });
   }
 
   removeSeat(row, seat) {
     // 2D array deep copy
     let seatsCopy = this.state.seats.map(arr => [...arr]);
-    const reservationsCopy = [...this.state.reservations];
-    const myReservationIndex = reservationsCopy.findIndex(function(
-      reservation
-    ) {
-      return reservation.row === row && reservation.seat === seat;
-    });
-    seatsCopy[row][seat] = false;
+    let reservationsCopy = [...this.state.reservations];
 
-    reservationsCopy.splice(myReservationIndex, 1);
+    seatsCopy[row][seat] = false;
+    reservationsCopy = this.removeFromReservations(reservationsCopy, row, seat);
     this.setState({ seats: seatsCopy, reservations: reservationsCopy });
   }
 
@@ -69,6 +71,14 @@ class Theater extends React.Component {
       (acc, row) => acc + row.reduce((a, seat) => a + seat, 0),
       0
     );
+  }
+
+  removeFromReservations(reservations, row, seat) {
+    const myReservationIndex = reservations.findIndex(function(reservation) {
+      return reservation.row === row && reservation.seat === seat;
+    });
+    reservations.splice(myReservationIndex, 1);
+    return reservations;
   }
 
   renderSeat(rowIndex, seatIndex) {
