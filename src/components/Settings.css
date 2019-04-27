@@ -1,0 +1,56 @@
+.settings {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: var(--padding);
+}
+
+.settings img {
+  height: 25px;
+}
+
+.settings-toggle {
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.settings-toggle:hover {
+  box-shadow: 0 0 5px #888;
+}
+
+.settings-visible {
+  background-color: white;
+  border: 1px solid #000;
+}
+
+.settings-input input {
+  margin-left: 1em;
+  width: 4em;
+}
+
+@media screen and (max-width: 700px) {
+  .settings {
+    position: fixed;
+    font-size: 2em;
+  }
+
+  .settings img {
+    width: 2.5em;
+  }
+
+  .settings-visible {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #000;
+  }
+
+  .settings-input input {
+    margin-left: 1em;
+    width: 50vw;
+    height: 2em;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #888;
+  }
+}

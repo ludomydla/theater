@@ -1,4 +1,7 @@
 import React from "react";
+import "./Settings.css";
+import settingsIcon from "../imgs/sliders-h-solid.svg";
+import closeIcon from "../imgs/times-solid.svg";
 
 class Settings extends React.Component {
   constructor(props) {
@@ -11,10 +14,17 @@ class Settings extends React.Component {
     this.setState({ [ev.target.name]: ev.target.value });
   }
 
-  // TODO move label+input outside as a separate universal component
-  render() {
+  renderSettingsForm() {
     return (
-      <div className="settings">
+      <div className="settings settings-visible">
+        <div className="settings-input">
+          <button
+            className="settings-toggle"
+            onClick={this.props.toggleSettings}
+          >
+            <img src={closeIcon} alt="" />
+          </button>
+        </div>
         <div className="settings-input">
           <label htmlFor="rows">Rows</label>
           <input
@@ -46,6 +56,22 @@ class Settings extends React.Component {
         </div>
       </div>
     );
+  }
+
+  renderSettingsButton() {
+    return (
+      <div className="settings">
+        <button className="settings-toggle" onClick={this.props.toggleSettings}>
+          <img src={settingsIcon} alt="" />
+        </button>
+      </div>
+    );
+  }
+
+  // TODO move label+input outside as a separate universal component
+  render() {
+    if (this.props.show) return this.renderSettingsForm();
+    else return this.renderSettingsButton();
   }
 }
 

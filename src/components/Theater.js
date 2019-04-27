@@ -73,6 +73,9 @@ class Theater extends React.Component {
     );
   }
 
+  /**
+   * Utility function to easily remove specific reservation from reservations list
+   */
   removeFromReservations(reservations, row, seat) {
     const myReservationIndex = reservations.findIndex(function(reservation) {
       return reservation.row === row && reservation.seat === seat;
