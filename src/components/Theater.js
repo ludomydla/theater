@@ -10,6 +10,23 @@ class Theater extends React.Component {
       seats: Array(props.rows).fill(Array(props.cols).fill(false)),
       reservations: []
     };
+    this.checkSeat = this.checkSeat.bind(this);
+    this.removeSeat = this.removeSeat.bind(this);
+  }
+
+  /**
+   * Recalculating this.state.seats in the event of change of rows and cols props
+   */
+  componentDidUpdate() {
+    if (
+      this.props.rows !== this.state.seats.length ||
+      this.props.cols !== this.state.seats[0].length
+    ) {
+      this.setState({
+        seats: Array(this.props.rows).fill(Array(this.props.cols).fill(false)),
+        reservations: []
+      });
+    }
   }
 
   checkSeat(row, seat) {
@@ -74,7 +91,7 @@ class Theater extends React.Component {
             key={seatIndex}
             row={rowIndex}
             seat={seatIndex}
-            clickHandler={this.checkSeat.bind(this)}
+            clickHandler={this.checkSeat}
             checked={this.state.seats[rowIndex][seatIndex] ? "checked" : ""}
           />
         );
@@ -93,29 +110,30 @@ class Theater extends React.Component {
   render() {
     const allSeats = [];
     for (let row = -1; row < this.state.seats.length; row++) {
-      allSeats.push(
-        //<div className="row" key={row}>
-        this.renderRow(row)
-        //</div>
-      );
+      allSeats.push(this.renderRow(row));
     }
     const reservationsList = this.state.reservations.map((res, index) => (
       <Reservation
         row={res.row}
         seat={res.seat}
         key={index}
-        clickHandler={this.removeSeat.bind(this)}
+        clickHandler={this.removeSeat}
       />
     ));
+    const gridStyle = {
+      gridTemplateColumns: `repeat(${+this.props.cols + 1}, 1fr)`
+    };
 
     return (
-      <div className="panel">
-        <div className="theater">{allSeats}</div>
-        <div className="reservations">
+      <div className="theater">
+        <div className="theater-seats" style={gridStyle}>
+          {allSeats}
+        </div>
+        <div className="theater-reservations">
           Vybrane miesta:
           {reservationsList}
         </div>
-        <div className="count">Pocet {this.getCount()}</div>
+        <div className="theater-count">Pocet {this.getCount()}</div>
       </div>
     );
   }

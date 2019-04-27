@@ -1,34 +1,40 @@
-.panel {
+.theater {
   width: 700px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 80% 20%;
+  grid-template-columns: 75% 25%;
   background-color: var(--bg-color);
 }
 
-.theater {
+.theater-seats {
   display: grid;
   padding: 5px;
   grid-template-columns: repeat(21, 1fr);
   grid-row-gap: 3px;
 }
 
-.count {
+.theater-count {
   padding: 5px;
 }
 
-.reservations {
+.theater-reservations {
   padding: 5px;
 }
 
-.reservations li {
+.theater-reservations li {
   list-style-type: none;
+  font-size: 0.7em;
 }
 
-.reservations button {
+.theater-reservations button {
   border: 0;
   background-color: transparent;
   color: blue;
   text-decoration: underline;
+
+  font-size: 1em;
+}
+
+.theater-reservations button:hover {
   cursor: pointer;
 }
